@@ -78,7 +78,7 @@ export default function AdminLogin() {
         transition={{ delay: 0.1 }}
         className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
       >
-        <div className="bg-[#1c1825]/80 backdrop-blur-xl py-10 px-6 shadow-2xl sm:rounded-3xl sm:px-10 border border-white/10 relative overflow-hidden">
+        <div className="bg-[#1c1825]/80 backdrop-blur-xl py-10 px-6 shadow-2xl rounded-3xl sm:px-10 border border-white/10 relative overflow-hidden mx-4 sm:mx-0">
           <form className="space-y-6" onSubmit={handleLogin}>
             {error && (
               <div className="p-4 bg-red-900/30 text-red-400 text-sm rounded-xl border border-red-500/20 flex items-center gap-3 animate-pulse">

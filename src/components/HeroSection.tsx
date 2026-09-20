@@ -84,7 +84,7 @@ export default function HeroSection() {
       )}
 
       <motion.div 
-        className="relative z-10 w-full max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 pointer-events-auto"
+        className="relative z-10 w-full max-w-2xl lg:max-w-3xl mx-auto px-4 sm:px-6 pointer-events-auto"
       >
 
         <motion.div 
