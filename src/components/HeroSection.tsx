@@ -114,19 +114,19 @@ export default function HeroSection() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="w-full"
             >
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 md:mb-6">
                 Your campus.<br />
                 <span className="text-[#CF9EFF]">Your voice.</span>
               </h1>
             </motion.div>
 
             <motion.p
-              className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 mb-8 md:mb-10 max-w-[90%] md:max-w-2xl mx-auto leading-relaxed"
+              className="text-sm sm:text-base md:text-lg text-slate-300 mb-8 md:mb-10 max-w-[90%] md:max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             >
-              Tell us what isn't working at <span className="font-bold text-lg sm:text-xl md:text-2xl lg:text-3xl text-white">VIT-AP</span>. From everyday frustrations to serious concerns, every student voice matters.
+              Tell us what isn't working at <span className="font-bold text-white">VIT-AP</span>. From everyday frustrations to serious concerns, every student voice matters.
             </motion.p>
 
             <motion.div
