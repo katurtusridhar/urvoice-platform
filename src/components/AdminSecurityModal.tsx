@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { requestChangeOTPs, changeCredentials } from '../services/api';
 import PasswordStrengthMeter, { isPasswordStrongEnough } from './PasswordStrengthMeter';
@@ -24,8 +24,21 @@ export default function AdminSecurityModal({ isOpen, onClose }: AdminSecurityMod
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  const handleRequestOTP = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [resendCount, setResendCount] = useState(0);
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  const handleRequestOTP = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (step === 2 && (countdown > 0 || resendCount >= 2)) return;
+    
     setError('');
     if (!currentPassword) {
       setError('Current password is required.');
@@ -60,8 +73,12 @@ export default function AdminSecurityModal({ isOpen, onClose }: AdminSecurityMod
       }
       
       if (msg) alert(msg);
-      else alert('OTP(s) sent successfully to the respective email inboxes.');
+      else if (step === 1) alert('OTP(s) sent successfully to the respective email inboxes.');
       
+      if (step === 2) {
+        setResendCount(prev => prev + 1);
+      }
+      setCountdown(30);
       setStep(2);
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to request OTP.');
@@ -99,6 +116,8 @@ export default function AdminSecurityModal({ isOpen, onClose }: AdminSecurityMod
     setShowNewPassword(false);
     setError('');
     setSuccessMsg('');
+    setResendCount(0);
+    setCountdown(0);
     onClose();
   };
 
@@ -188,6 +207,21 @@ export default function AdminSecurityModal({ isOpen, onClose }: AdminSecurityMod
                     {requiresDualOtp ? 'Security OTPs sent to your current and new email addresses.' : 'Security OTP sent to your current email address.'}
                   </div>
                   
+                  <div className="flex justify-end items-center mb-2 px-1">
+                    <button 
+                      type="button" 
+                      disabled={countdown > 0 || resendCount >= 2 || loading}
+                      onClick={() => handleRequestOTP()}
+                      className="text-[11px] font-medium text-[#CF9EFF] disabled:text-slate-500 hover:text-white transition-colors"
+                    >
+                      {countdown > 0 
+                        ? `Resend in ${countdown}s` 
+                        : resendCount >= 2 
+                          ? 'Max attempts reached' 
+                          : 'Resend OTP(s)'}
+                    </button>
+                  </div>
+
                   <div>
                     <label className="block text-sm font-medium text-slate-300 mb-1.5">OTP (Current Email)</label>
                     <input type="text" required value={otpCurrent} onChange={e => setOtpCurrent(e.target.value)} placeholder="123456" className="w-full h-12 px-4 rounded-xl bg-black/40 border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-[#CF9EFF] outline-none tracking-widest text-center text-xl font-mono" maxLength={6} />

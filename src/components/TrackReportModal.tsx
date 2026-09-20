@@ -133,14 +133,16 @@ export default function TrackReportModal({ isOpen, onClose }: TrackReportModalPr
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-6"
                 >
-                  <div className="p-5 bg-black/40 border border-white/5 rounded-2xl">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#CF9EFF] to-purple-400" />
+                    
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <p className="text-xs text-slate-500 font-mono mb-1">#{report.id}</p>
                         <h4 className="text-white font-medium">{report.category}</h4>
                       </div>
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border ${getStatusColor(report.status)}`}>
-                        {report.status}
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border ${getStatusColor(report.status === 'spam' ? 'closed' : report.status)}`}>
+                        {report.status === 'spam' ? 'closed' : report.status}
                       </span>
                     </div>
                     <p className="text-sm text-slate-400 line-clamp-3">{report.description}</p>
@@ -157,7 +159,7 @@ export default function TrackReportModal({ isOpen, onClose }: TrackReportModalPr
                       <div className="relative">
                         <div className="absolute w-3 h-3 bg-[#CF9EFF] rounded-full left-[-29px] top-1 shadow-[0_0_10px_#CF9EFF]" />
                         <p className="text-sm text-white font-medium">Status Updated</p>
-                        <p className="text-xs text-[#CF9EFF] mt-1 font-medium uppercase tracking-wide">{report.status}</p>
+                        <p className="text-xs text-[#CF9EFF] mt-1 font-medium uppercase tracking-wide">{report.status === 'spam' ? 'closed' : report.status}</p>
                       </div>
                     )}
                   </div>

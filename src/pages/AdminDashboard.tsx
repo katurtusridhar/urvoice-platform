@@ -50,12 +50,13 @@ export default function AdminDashboard() {
     }
   };
 
-  const filteredReports = reports.filter(r => filter === 'all' ? true : r.status === filter);
+  const filteredReports = reports.filter(r => filter === 'all' ? r.status !== 'spam' : r.status === filter);
 
   // Stats
-  const total = reports.length;
-  const openCount = reports.filter(r => r.status === 'submitted' || r.status === 'reviewing').length;
-  const resolvedCount = reports.filter(r => r.status === 'resolved' || r.status === 'closed').length;
+  const nonSpamReports = reports.filter(r => r.status !== 'spam');
+  const total = nonSpamReports.length;
+  const openCount = nonSpamReports.filter(r => r.status === 'submitted' || r.status === 'reviewing').length;
+  const resolvedCount = nonSpamReports.filter(r => r.status === 'resolved' || r.status === 'closed').length;
 
   const logout = () => {
     localStorage.removeItem('admin_token');
@@ -141,6 +142,7 @@ export default function AdminDashboard() {
                 <option value="investigating">Investigating</option>
                 <option value="resolved">Resolved</option>
                 <option value="closed">Closed</option>
+                <option value="spam">Spam Folder</option>
               </select>
               <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
@@ -215,6 +217,7 @@ export default function AdminDashboard() {
                         report.status === 'reviewing' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" :
                         report.status === 'investigating' ? "bg-purple-500/10 text-purple-400 border-purple-500/20" :
                         report.status === 'resolved' ? "bg-green-500/10 text-green-400 border-green-500/20 shadow-[0_0_10px_rgba(74,222,128,0.1)]" :
+                        report.status === 'spam' ? "bg-red-500/10 text-red-500 border-red-500/20" :
                         "bg-slate-800 text-slate-500 border-slate-700"
                       )}>
                         <span className={clsx(
@@ -223,6 +226,7 @@ export default function AdminDashboard() {
                           report.status === 'reviewing' ? "bg-blue-400" :
                           report.status === 'investigating' ? "bg-purple-400" :
                           report.status === 'resolved' ? "bg-green-400" :
+                          report.status === 'spam' ? "bg-red-500" :
                           "bg-slate-600"
                         )}></span>
                         {report.status}
@@ -240,6 +244,7 @@ export default function AdminDashboard() {
                           <option value="investigating">Investigating</option>
                           <option value="resolved">Resolved</option>
                           <option value="closed">Closed</option>
+                          <option value="spam">Mark as Spam</option>
                         </select>
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
